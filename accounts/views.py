@@ -103,20 +103,16 @@ def login(request):
                     
                     if userCheck:
                         user = auth.authenticate(username = email, password = password)
-                        print(user)
                         if user is not None:
                             userProfile = Profile.objects.get(user = user)
                             if userProfile.is_verified:
-                                if user is not None:
                                     auth.login(request, user)
                                     messages.success(request, "Login successful")
                                     
                                     if request.GET.get('next') != None:
-                                        return redirect(request.GET['next'])
+                                        return redirect(request.GET.get('next'))
                                     
                                     return redirect('/')
-                                else:
-                                    messages.warning(request, "Invalid credentials")
                             else:
                                 messages.warning(request, "Your email is not verified. Verify it to login")
                         else:
